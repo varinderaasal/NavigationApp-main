@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   StreamSubscription<Position>? _positionSubscription;
 
   LatLng? _currentUserLocation;
+  LatLng? _selectedBuildingLocation;
 
   List<double> _accelerometerValues = [0.0, 0.0, 0.0];
   List<double> _magnetometerValues = [0.0, 0.0, 0.0];
@@ -56,7 +57,7 @@ class _MyAppState extends State<MyApp> {
   final List<Map<String, dynamic>> buildings = [
     {
       "name": "MBA Block",
-      "latLng": LatLng(30.859893187550895, 75.86024576580667),
+      "latLng": LatLng(30.889073453744786, 75.87180081240308),
     },
     {
       "name": "IT Department",
@@ -73,6 +74,22 @@ class _MyAppState extends State<MyApp> {
     {
       "name": "Tuck Shop",
       "latLng": LatLng(30.860512498582125, 75.86078838773383),
+    },
+
+  ];
+
+  final List<Map<String, dynamic>> houseBuildings = [
+    {
+      "name": "Building A",
+      "latLng": LatLng(30.8890344848989, 75.8717958207744),
+    },
+    {
+      "name": "Building B",
+      "latLng": LatLng(30.889318883371473, 75.86984716898593),
+    },
+    {
+      "name": "Building C",
+      "latLng": LatLng(30.890107637235303, 75.87171378647662),
     },
 
   ];
@@ -287,6 +304,7 @@ class _MyAppState extends State<MyApp> {
 
 
   Widget buildFloatingSearchBar() {
+  
     return FloatingSearchBar(
       controller: _searchBarController,
       hint: 'Search for buildings...',
@@ -325,13 +343,10 @@ class _MyAppState extends State<MyApp> {
                   title: Text(building['name']),
                   onTap: () {
                     _searchBarController.close();
-                    Fluttertoast.showToast(
-                      msg: "Selected: ${building['name']}",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: Colors.black,
-                      textColor: Colors.white,
-                    );
+                    setState(() {
+                      _selectedBuildingLocation=building['latLng'];
+                    });
+                    
                   },
                 );
               },
@@ -366,7 +381,7 @@ class _MyAppState extends State<MyApp> {
               Expanded(
                 child: ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                  child: MapScreen(currentUserLocation: userLocation, geoJsonData:"", onPathSelected: (List<LatLng> pathCoordinates) {  },
+                  child: MapScreen(currentUserLocation: userLocation,selectedBuildingLocation: _selectedBuildingLocation,
                   ),
                 ),
               ),
