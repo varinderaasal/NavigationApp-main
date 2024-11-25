@@ -344,9 +344,20 @@ class _MyAppState extends State<MyApp> {
                   onTap: () {
                     _searchBarController.close();
                     setState(() {
-                      _selectedBuildingLocation=building['latLng'];
+                      _selectedBuildingLocation = building['latLng'];
+                      if (_currentUserLocation != null && _selectedBuildingLocation != null) {
+                        _targetBearing = Geolocator.bearingBetween(
+                            _currentUserLocation!.latitude,
+                            _currentUserLocation!.longitude,
+                            _selectedBuildingLocation!.latitude,
+                          _selectedBuildingLocation!.longitude,
+                        );
+                        Fluttertoast.showToast(msg: "Pointing to ${building['name']}");
+                      } else {
+                        Fluttertoast.showToast(msg: "User location not available");
+                      }
                     });
-                    
+                  
                   },
                 );
               },
