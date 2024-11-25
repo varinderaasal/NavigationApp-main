@@ -29,6 +29,15 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Widget map(LatLng userLocation){
+     List<LatLng> polylinePoints = [];
+
+    // Add polyline points if both locations are available
+    if (widget.currentUserLocation != null && widget.selectedBuildingLocation != null) {
+      polylinePoints = [
+        widget.currentUserLocation!,
+        widget.selectedBuildingLocation!,
+      ];
+    }
     return FlutterMap(
         options:  MapOptions(
             initialCenter: userLocation,
@@ -37,18 +46,40 @@ class _MapScreenState extends State<MapScreen> {
             maxZoom: 20,
             interactionOptions: InteractionOptions(flags: InteractiveFlag.all)
         ),
-        children: [
-          openStreetMapLayer,
-          MarkerLayer(markers: [
-             Marker(
-              point: userLocation, 
-              child: Icon(Icons.location_on, 
-              color: Colors.red, 
-              size: 40,),),
-             if (widget.selectedBuildingLocation != null)  
-             Marker(point: widget.selectedBuildingLocation!, child: Icon(Icons.location_city,color: Colors.red,size: 50,) )    
-        ])
-      ]);
+  children: [
+        openStreetMapLayer,
+        PolylineLayer(
+          polylines: [
+            Polyline(
+              points: polylinePoints,
+              color: Colors.blue,
+              strokeWidth: 4.0,
+            ),
+          ],
+        ),
+        MarkerLayer(
+          markers: [
+            Marker(
+              point: userLocation,
+              child: Icon(
+                Icons.location_on,
+                color: Colors.red,
+                size: 40,
+              ),
+            ),
+            if (widget.selectedBuildingLocation != null)
+              Marker(
+                point: widget.selectedBuildingLocation!,
+                child: Icon(
+                  Icons.location_city,
+                  color: Colors.red,
+                  size: 50,
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
   }
 
   TileLayer get openStreetMapLayer => TileLayer(

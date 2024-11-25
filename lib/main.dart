@@ -57,11 +57,11 @@ class _MyAppState extends State<MyApp> {
   final List<Map<String, dynamic>> buildings = [
     {
       "name": "MBA Block",
-      "latLng": LatLng(30.889073453744786, 75.87180081240308),
+      "latLng": LatLng(30.859876279893527, 75.86026916242005),
     },
     {
       "name": "IT Department",
-      "latLng": LatLng(30.86032120868478, 75.86032537079052),
+      "latLng": LatLng(30.86031970848174, 75.86027307598508),
     },
     {
       "name": "Auditorium",
